@@ -7,7 +7,7 @@ namespace SalveTest.Service.Services
 
     public class ClinicService : IClinicService
     {
-        public async Task<IEnumerable<Clinic>> GetClinics()
+        public async Task<IEnumerable<Clinic>> GetClinicsAsync()
         {
             using (var textReader = new StreamReader("SampleData\\clinics.csv"))
             using(var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture))

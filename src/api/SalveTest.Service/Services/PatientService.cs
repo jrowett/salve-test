@@ -1,16 +1,26 @@
-﻿using SalveTest.Service.Contracts;
+﻿using CsvHelper;
+using SalveTest.Service.Contracts;
+using System.Globalization;
 
 namespace SalveTest.Service.Services
 {
     public class PatientService : IPatientService
     {
-        public IEnumerable<Patient> GetPatientsForClinic(int clinicId)
+        public async Task<IEnumerable<Patient>> GetPatientsForClinicAsync(int clinicId)
         {
-            return new[]
+            var csv = $"SampleData\\patients-{clinicId}.csv";
+
+            if (!File.Exists(csv))
             {
-                new Patient {Id = 1, FirstName = "Joe", LastName = "Bloggs", DateOfBirth = DateTime.Now.AddYears(-40).Date},
-                new Patient {Id = 2, FirstName = "Jane", LastName = "Bloggs", DateOfBirth = DateTime.Now.AddYears(-40).Date}
-            };
+                return null;
+            }
+
+            using (var textReader = new StreamReader(csv))
+            using (var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture))
+            {
+                csvReader.Context.RegisterClassMap<PatientMap>();
+                return await csvReader.GetRecordsAsync<Patient>().ToListAsync();
+            }
         }
     }
 }

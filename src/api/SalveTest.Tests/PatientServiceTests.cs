@@ -1,16 +1,24 @@
 ﻿using NUnit.Framework;
 using SalveTest.Service.Services;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SalveTest.Tests
 {
     public class PatientServiceTests
     {
-        [Test]
-        public void ReturnsData()
+        [TestCase(1)]
+        [TestCase(2)]
+        public async Task ReturnsData(int clinicId)
         {
-            var patients = new PatientService().GetPatientsForClinic(1);
+            var patients = await new PatientService().GetPatientsForClinicAsync(clinicId);
             Assert.That(patients.Count(), Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void DoesNotThrowWhenInvalidClinicId()
+        {
+            Assert.DoesNotThrowAsync(async () => await new PatientService().GetPatientsForClinicAsync(0));
         }
     }
 

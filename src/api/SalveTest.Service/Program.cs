@@ -24,13 +24,16 @@ app.UseHttpsRedirection();
 
 app.MapGet("/clinics", async (IClinicService clinics) =>
 {
-    return await clinics.GetClinics();
+    return await clinics.GetClinicsAsync();
 })
 .WithName("GetClinics");
 
-app.MapGet("/clinics/{id}/patients", (int id, IPatientService patients) =>
+app.MapGet("/clinics/{id}/patients", async (int id, IPatientService patients) =>
 {
-    return patients.GetPatientsForClinic(id);
+    return await patients.GetPatientsForClinicAsync(id)
+    is IEnumerable<Patient> result
+       ? Results.Ok(result)
+       : Results.NotFound();
 })
 .WithName("GetPatientsForClinic");
 
