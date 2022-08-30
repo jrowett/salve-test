@@ -11,7 +11,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IClinicService, ClinicService>();
 builder.Services.AddTransient<IPatientService, PatientService>();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
+app.UseCors(
+        options => options.WithOrigins("http://localhost:3000").AllowAnyMethod()
+    );
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import axios from "axios";
+import Clinics from './Components/Clinics';
+import Patients from './Components/Patients';
 
 function App() {
+  const [clinicId, setClinicId] = React.useState(0);
+  const [patients, setPatients] = React.useState([]);
+
+  const handleChange = function(id){
+    setClinicId(id);
+
+      axios
+        .get(`https://localhost:7289/clinics/${id}/patients`)
+        .then((response) => setPatients(response.data))
+        .catch();
+
+  }
   return (
+    
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>
+        Salve Technical Test
+      </h1>
+      <Clinics onChange={(id) => handleChange(id)} />
+      <Patients data={patients} />
     </div>
   );
 }
