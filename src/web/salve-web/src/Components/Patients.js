@@ -1,6 +1,7 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import moment from 'moment';
 
 function Patients(props) {
     const columns = [
@@ -15,11 +16,12 @@ function Patients(props) {
       }, {
         dataField: 'dateOfBirth',
         text: 'Date Of Birth ',
-        sort: true
+        sort: true,
+        formatter: function (cell, row, rowIndex, formatExtraData) { return moment(cell).format('DD/MM/YYYY') }
       }
     ];
-      
-      
+
+    
 
   return (
     props.data.length > 0 
