@@ -1,4 +1,5 @@
 using SalveTest.Service.Contracts;
+using SalveTest.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IClinicService, ClinicService>();
+builder.Services.AddTransient<IPatientService, PatientService>();
 
 var app = builder.Build();
 
@@ -18,23 +22,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/clinics", () =>
+app.MapGet("/clinics", (IClinicService clinics) =>
 {
-    return new[]
-    {
-        new Clinic {Id = 1, Name = "Test Clinic 1"},
-        new Clinic {Id = 2, Name = "Test Clinic 2"}
-    };
+    return clinics.GetClinics();
 })
 .WithName("GetClinics");
 
-app.MapGet("/clinics/{id}/patients", (int id) =>
+app.MapGet("/clinics/{id}/patients", (int id, IPatientService patients) =>
 {
-    return new[]
-    {
-        new Patient {Id = 1, FirstName = "Joe", LastName = "Bloggs", DateOfBirth = DateTime.Now.AddYears(-40).Date},
-         new Patient {Id = 2, FirstName = "Jane", LastName = "Bloggs", DateOfBirth = DateTime.Now.AddYears(-40).Date}
-    };
+    return patients.GetPatientsForClinic(id);
 })
 .WithName("GetPatientsForClinic");
 
