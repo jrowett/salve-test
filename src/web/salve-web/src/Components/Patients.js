@@ -1,5 +1,6 @@
 import React from "react";
 import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 function Patients(props) {
     const columns = [
@@ -22,7 +23,7 @@ function Patients(props) {
 
   return (
     props.data.length > 0 
-    ?    <BootstrapTable keyField='id' data={ props.data } columns={ columns } />
+    ?    <BootstrapTable keyField='id' data={ props.data } columns={ columns } pagination={ paginationFactory() } />
     : <div>No patient records to display</div>    
   );
 }
