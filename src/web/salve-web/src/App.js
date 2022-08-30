@@ -27,7 +27,10 @@ function App() {
         Salve Technical Test
       </h1>
       <Clinics data={clinics} onClinicSelected={(id) => handleChange(id)} />
+      
+      <div className='patients-list'>
       <Patients data={patients} />
+      </div>
     </div>
   );
 }
