@@ -1,16 +1,25 @@
 ﻿using NUnit.Framework;
 using SalveTest.Service.Services;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SalveTest.Tests
 {
     public class ClinicServiceTests
     {
         [Test]
-        public void ReturnsData()
+        public async Task ReturnsData()
         {
-            var clinics = new ClinicService().GetClinics();
-            Assert.That(clinics.Count(), Is.GreaterThan(0));
+            var clinics = await new ClinicService().GetClinics();
+            Assert.That(clinics.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public async Task ContainsExpectedRecords()
+        {
+            var clinics = await new ClinicService().GetClinics();
+            var record = clinics.FirstOrDefault(c => c.Name == "Salve Fertility");
+            Assert.That(record, Is.Not.Null);
         }
     }
 

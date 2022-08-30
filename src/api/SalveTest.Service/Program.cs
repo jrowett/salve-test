@@ -22,9 +22,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/clinics", (IClinicService clinics) =>
+app.MapGet("/clinics", async (IClinicService clinics) =>
 {
-    return clinics.GetClinics();
+    return await clinics.GetClinics();
 })
 .WithName("GetClinics");
 

@@ -1,17 +1,20 @@
-﻿using SalveTest.Service.Contracts;
+﻿using CsvHelper;
+using SalveTest.Service.Contracts;
+using System.Globalization;
 
 namespace SalveTest.Service.Services
 {
 
     public class ClinicService : IClinicService
     {
-        public IEnumerable<Clinic> GetClinics()
+        public async Task<IEnumerable<Clinic>> GetClinics()
         {
-            return new[]
+            using (var textReader = new StreamReader("SampleData\\clinics.csv"))
+            using(var csvReader = new CsvReader(textReader, CultureInfo.InvariantCulture))
             {
-                new Clinic {Id = 1, Name = "Test Clinic 1"},
-                new Clinic {Id = 2, Name = "Test Clinic 2"}
-            };
+                csvReader.Context.RegisterClassMap<ClinicMap>();
+                return await csvReader.GetRecordsAsync<Clinic>().ToListAsync();
+            }
         }
     }
 }

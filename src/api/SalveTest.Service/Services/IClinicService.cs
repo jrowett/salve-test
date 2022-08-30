@@ -4,6 +4,6 @@ namespace SalveTest.Service.Services
 {
     public interface IClinicService
     {
-        IEnumerable<Clinic> GetClinics();
+        Task<IEnumerable<Clinic>> GetClinics();
     }
 }
