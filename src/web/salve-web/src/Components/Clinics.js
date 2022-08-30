@@ -3,23 +3,16 @@ import axios from "axios";
 import Dropdown from 'react-bootstrap/Dropdown';
 
 function Clinics(props) {
-  const [clinics, setClinics] = React.useState([]);
-
-  React.useEffect(() => {
-    axios
-      .get("https://localhost:7289/clinics")
-      .then((response) => setClinics(response.data));
-  }, []);
 
   return (
     <div>
-    <Dropdown onSelect={(e) => props.onChange(e)}>
+    <Dropdown onSelect={(e) => props.onClinicSelected(e)}>
       <Dropdown.Toggle id="dropdown-clinic">
         Select Clinic
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-      {clinics.map((clinic) => (
+      {props.data.map((clinic) => (
         <Dropdown.Item eventKey={clinic.id} key={clinic.id} value={clinic.id}>{clinic.name}</Dropdown.Item>
       ))}
       </Dropdown.Menu>
